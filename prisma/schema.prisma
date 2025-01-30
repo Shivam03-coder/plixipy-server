@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String       @id @default(uuid())
+  fullname String
+  email    String       @unique
+  password String // hashed password
+  contact  Usercontact?
+  Tokens   Token[]
+  Groups   Group[]
+
+  @@index([email, fullname])
+}
+
+model Usercontact {
+  id            String   @id @default(uuid())
+  userId        String?  @unique // Initially null, will be updated later
+  contactNumber String   @unique
+  termsAccepted Boolean
+  verified      Boolean? @default(false)
+  Otp           Otp?
+  user          User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([contactNumber, verified])
+}
+
+model Otp {
+  id          String       @id @default(uuid())
+  contactId   String?      @unique
+  otp         String
+  expireAt    DateTime
+  createdAt   DateTime     @default(now())
+  usercontact Usercontact? @relation(fields: [contactId], references: [id], onDelete: Cascade)
+}
+
+model Token {
+  id           String   @id @default(uuid())
+  userId       String
+  refreshToken String   @unique
+  createdAt    DateTime @default(now())
+  expiresAt    DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Group {
+  id                String            @id @default(uuid())
+  userId            String
+  groupName         String
+  groupSince        DateTime
+  groupInfoImage    String
+  groupPlatformName String
+  groupCategory     GroupCategoryType @default(student)
+  groupInterest     String
+  groupInviteLink   String
+  groupPurpose      GroupPurposeType  @default(EarnMoney)
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([groupName, groupPlatformName, groupInterest])
+}
+
+enum GroupCategoryType {
+  student
+  niche1
+  niche2
+  niche3
+}
+
+enum GroupPurposeType {
+  EarnMoney
+  IncreaseNumber
+}
