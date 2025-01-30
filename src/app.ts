@@ -18,7 +18,7 @@ app.use(
   })
 );
 app.use(morgan("common"));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.json());
 app.use(passport.initialize());
 

@@ -1,12 +1,9 @@
-namespace $Enums {
-  export type Role = "user" | "admin" | "moderator";
+import { Request } from "express";
+import { File } from "multer"; 
+
+interface MulterRequest extends Request {
+  file?: File;
+  files?: File[];
 }
 
-export type UserType = {
-  id: string;
-  emailAddress: string;
-  password: string;
-  name: string | null;
-  imageUrl: string | null;
-  role: $Enums.Role;
-};
+export default MulterRequest;

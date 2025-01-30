@@ -11,17 +11,17 @@ model User {
   id       String       @id @default(uuid())
   fullname String
   email    String       @unique
-  password String // hashed password
-  contact  Usercontact?
+  password String
+  usercontact  Usercontact?
   Tokens   Token[]
   Groups   Group[]
-
+  
   @@index([email, fullname])
 }
 
 model Usercontact {
   id            String   @id @default(uuid())
-  userId        String?  @unique // Initially null, will be updated later
+  userId        String?  @unique
   contactNumber String   @unique
   termsAccepted Boolean
   verified      Boolean? @default(false)
