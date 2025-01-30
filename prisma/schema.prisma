@@ -8,14 +8,14 @@ datasource db {
 }
 
 model User {
-  id       String       @id @default(uuid())
-  fullname String
-  email    String       @unique
-  password String
-  usercontact  Usercontact?
-  Tokens   Token[]
-  Groups   Group[]
-  
+  id          String       @id @default(uuid())
+  fullname    String
+  email       String       @unique
+  password    String
+  usercontact Usercontact?
+  Tokens      Token[]
+  Groups      Group[]
+
   @@index([email, fullname])
 }
 
@@ -25,7 +25,7 @@ model Usercontact {
   contactNumber String   @unique
   termsAccepted Boolean
   verified      Boolean? @default(false)
-  Otp           Otp?
+  Otp           Otp[]
   user          User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([contactNumber, verified])
