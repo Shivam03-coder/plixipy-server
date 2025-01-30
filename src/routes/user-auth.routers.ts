@@ -8,3 +8,4 @@ export const AppRouter = Router();
 AppRouter.route("/contact-verify").post(
   UserAuthController.UserPhoneNumberVerify
 );
+AppRouter.route("/otp-verify").post(UserAuthController.VerifyOtp);

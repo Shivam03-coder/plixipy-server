@@ -63,6 +63,40 @@ export class UserAuthController {
     }
   );
 
+  // VERIFY OTP
+  public static VerifyOtp = AsyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const { otp, contactId } = req.body;
+
+      // Find the user by email address
+      const userContactOtp = await db.otp.findUnique({
+        where: { contactId },
+      });
+
+      if (!userContactOtp) {
+        throw new ApiError(404, "USER NOT FOUND");
+      }
+
+      const currentTime = new Date();
+
+      // Validate OTP expiration and correctness in a single block
+      if (currentTime > userContactOtp.expireAt) {
+        throw new ApiError(400, "OTP EXPIRED");
+      }
+
+      if (otp !== userContactOtp.otp) {
+        throw new ApiError(400, "INVALID OTP");
+      }
+
+      await db.usercontact.update({
+        where: { id: userContactOtp.contactId! },
+        data: { verified: true },
+      });
+
+      res.status(200).json(new ApiResponse(200, "OTP VERIFIED SUCCESSFULLY"));
+    }
+  );
+
   // SIGNUP
   // public static UserSignup = AsyncHandler(
   //   async (req: Request, res: Response): Promise<void> => {

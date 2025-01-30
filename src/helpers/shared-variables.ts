@@ -61,7 +61,7 @@ export const options = {
 };
 
 export const generateOtp = () => {
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const letters = "123456789";
   let otp = "";
   for (let i = 0; i < 4; i++) {
     otp += letters.charAt(Math.floor(Math.random() * letters.length));
