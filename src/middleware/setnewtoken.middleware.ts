@@ -6,8 +6,7 @@ import { AuthUtility } from "@src/utils/auth-utils";
 export const GetnewToken = AsyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const accessToken = req.headers["authorization"]?.split(" ")[1];
-      const refreshToken = req.headers["refresh-token"];
+      const { accessToken, refreshToken } = req.cookies;
 
       if (!accessToken && !refreshToken) {
         throw new ApiError(401, "Unauthorized - Tokens not provided");
@@ -16,20 +15,21 @@ export const GetnewToken = AsyncHandler(
       if (accessToken && !isTokenExpired(accessToken)) {
         req.headers["authorization"] = `Bearer ${accessToken}`;
       } else if (refreshToken) {
+        // Renew tokens using refresh token
         const { newAccessToken, newRefreshToken } =
-          await AuthUtility.RenewjwtTokens(refreshToken as string);
-        req.headers["authorization"] = `Bearer ${newAccessToken}`;
-        res.setHeader("accessToken", newAccessToken);
-        res.setHeader("refreshToken", newRefreshToken);
-      } else {
-        // If no valid token or refresh token is found, reject the request
-        throw new ApiError(401, "Unauthorized - Invalid or expired tokens");
-      }
+          await AuthUtility.RenewjwtTokens(refreshToken);
 
-      // Continue to the next middleware/handler
+        // Update headers and set cookies
+        req.headers["authorization"] = `Bearer ${newAccessToken}`;
+        res
+          .cookie("accessToken", newAccessToken, options)
+          .cookie("refreshToken", newRefreshToken, options);
+      } else {
+        throw new ApiError(401, "Unauthorized - Refresh token is invalid");
+      }
       next();
     } catch (error) {
-      console.error("Error in GetnewToken middleware:", error); // Log the error for debugging
+      console.error("Error in GetnewToken middleware:", error); // Debug: Log error
       next(error);
     }
   }

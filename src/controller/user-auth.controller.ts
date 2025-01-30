@@ -4,6 +4,8 @@ import {
   hashPassword,
   isEmailValid,
   isWeakpassword,
+  options,
+  verifyPassword,
 } from "@src/helpers/shared-variables";
 import {
   ApiError,
@@ -13,6 +15,7 @@ import {
 import { db } from "@src/db";
 import { SendOtpTo } from "@src/libs/twilio";
 import { getImageUrlFromCloudinary } from "@src/libs/cloudinary";
+import { AuthUtility } from "@src/utils/auth-utils";
 
 export class UserAuthController {
   // PHONE NUMBER VERIFICATION
@@ -189,6 +192,62 @@ export class UserAuthController {
       });
 
       res.json(new ApiResponse(200, "Success", newUser));
+    }
+  );
+
+  // SIGN UP
+  public static UserLogin = AsyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const { contactNumber, password } = req.body;
+
+      if (!contactNumber || !password) {
+        throw new ApiError(400, "Contact number and password are required");
+      }
+
+      const isUserContactExists = await db.usercontact.findFirst({
+        where: {
+          contactNumber,
+        },
+      });
+
+      if (!isUserContactExists) {
+        throw new ApiError(404, "User not found");
+      }
+
+      const registeredUser = await db.user.findUnique({
+        where: {
+          id: isUserContactExists.userId!,
+        },
+      });
+
+      if (!registeredUser) {
+        throw new ApiError(500, "Internal Server Error");
+      }
+
+      const isPasswordCorrect = await verifyPassword(
+        password,
+        registeredUser?.password
+      );
+
+      if (!isPasswordCorrect) {
+        throw new ApiError(401, "Incorrect password");
+      }
+
+      const { accessToken, refreshToken } =
+        AuthUtility.generateTokens(registeredUser);
+
+      res
+        .status(200)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, options)
+        .json(new ApiResponse(200, "Login successful"));
+    }
+  );
+
+  // USER PROFIEL
+  public static GetUserProfile = AsyncHandler(
+    async (req: Request, res: Response) => {
+      res.send(new ApiResponse(200, "Sucess", req.user));
     }
   );
 }

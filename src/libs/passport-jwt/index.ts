@@ -23,9 +23,8 @@ passport.use(
         where: { id: jwtPayload._id },
         select: {
           id: true,
-          role: true,
-          emailAddress: true,
-          name: true,
+          email: true,
+          fullname: true,
         },
       });
 
