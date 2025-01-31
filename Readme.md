@@ -1,8 +1,8 @@
-# Node.js Server with TypeScript for Sentuo
+# Node.js Server with TypeScript for Plixipy
 
 ## 📌 Project Overview
 
-This project is a **Node.js** server built using **TypeScript** for **Sentuo**. It provides a robust and scalable backend with modern best practices, including environment variables, error handling, and structured code organization.
+This project is a **Node.js** server built using **TypeScript** for **Plixipy**. It provides a robust and scalable backend with modern best practices, including environment variables, error handling, and structured code organization.
 
 ## 🚀 Features
 
