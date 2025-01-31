@@ -70,29 +70,12 @@ This project is a **Node.js** server built using **TypeScript** for **Plixipy**.
    pnpm install
    ```
 
-3. **Create a `.env` file and configure environment variables:**
-   ```env
-  # Authentication
-ACCESS_TOKEN_SECRET_KEY=your_access_token_secret
-REFRESH_TOKEN_SECRET_KEY=your_refresh_token_secret
-PORT=3030
-DATABASE_URL="postgresql://username:password@host:port/database?sslmode=require"
-AUTH_EMAIL=your_email@example.com
-AUTH_PASS=your_email_password
-TWILIO_ACCOUNT_SID=your_twilio_account_sid
-TWILIO_AUTH_TOKEN=your_twilio_auth_token
-TWILIO_PHONE_NUMBER=your_twilio_phone_number
-CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
-CLOUDINARY_API_KEY=your_cloudinary_api_key
-CLOUDINARY_API_SECRET=your_cloudinary_api_secret
-   ````
-
-4. **Run the development server:**
+3. **Run the development server:**
 ```sh
 pnpm run dev
 ````
 
-5. **Build for production:**
+4. **Build for production:**
    ```sh
    npm run build
    npm start
