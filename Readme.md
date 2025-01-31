@@ -127,5 +127,3 @@ pnpm run dev
 | POST   | `/user-signup`    | User signup with file upload |
 | POST   | `/user-login`     | User login                   |
 | GET    | `/user-profile`   | Get user profile (protected) |
-
-
