@@ -77,8 +77,8 @@ pnpm run dev
 
 4. **Build for production:**
    ```sh
-   npm run build
-   npm start
+   pnpm run build
+   pnpm start
    ```
 
 ## 📡 API Endpoints
