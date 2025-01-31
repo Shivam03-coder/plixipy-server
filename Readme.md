@@ -72,40 +72,20 @@ This project is a **Node.js** server built using **TypeScript** for **Plixipy**.
 
 3. **Create a `.env` file and configure environment variables:**
    ```env
-
-   ```
-
-# Authentication
-
+  # Authentication
 ACCESS_TOKEN_SECRET_KEY=your_access_token_secret
 REFRESH_TOKEN_SECRET_KEY=your_refresh_token_secret
-
-# Server
-
 PORT=3030
-
-# Database
-
 DATABASE_URL="postgresql://username:password@host:port/database?sslmode=require"
-
-# NodeMailer
-
 AUTH_EMAIL=your_email@example.com
 AUTH_PASS=your_email_password
-
-# Twilio
-
 TWILIO_ACCOUNT_SID=your_twilio_account_sid
 TWILIO_AUTH_TOKEN=your_twilio_auth_token
 TWILIO_PHONE_NUMBER=your_twilio_phone_number
-
-# Cloudinary
-
 CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
 CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
-
-````
+   ````
 
 4. **Run the development server:**
 ```sh
